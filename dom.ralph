@@ -93,6 +93,22 @@
   ((js:get-property node "removeEventListener")
    type listener capture?))
 
+(define-generic trigger-event (object (event <event>)))
+
+(define-function trigger-event ((node <node>) (event <event>))
+  ((js:get-property node "dispatchEvent") event))
+
+(define-function trigger-event ((object <object>) (event <event>))
+  (set! (get event "target") object)
+  (do (method (listener)
+        (listener event))
+      (or (get object "%listeners" (get event "type"))
+          (make-array))))
+
+(define-function make-event (type #key bubble? cancelable?)
+  (js:var event ((js:get-property document "createEvent") "Event"))
+  ((js:get-property event "initEvent") type bubble? cancelable?)
+  event)
 
 ;; attributes
 
