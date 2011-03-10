@@ -71,27 +71,28 @@
 
 (define-generic prevent-default (event))
 
-(define-generic add-listener (object event-name listener))
+(define-generic add-listener (object type listener))
 
-(define-function add-listener ((node <node>) event-name listener capture?)
-  ((js:get-property node "addEventListener") event-name listener capture?))
+(define-function add-listener ((node <node>) type listener capture?)
+  ((js:get-property node "addEventListener") type listener capture?))
 
-(define-function add-listener ((object <object>) event-name listener)
+(define-function add-listener ((object <object>) type listener)
   (unless (has? object "%listeners")
     (set! (get object "%listeners")
           (make-object)))
-  (bind ((listeners (or (get object "%listeners" event-name)
-                        (set! (get object "%listeners" event-name)
+  (bind ((listeners (or (get object "%listeners" type)
+                        (set! (get object "%listeners" type)
                               (make-array)))))
     (push-last listeners listener)))
 
 
-(define-generic remove-listener (object event-name listener))
+(define-generic remove-listener (object type listener))
 
 (define-function remove-listener ((node <node>)
-                                  event-name listener capture?)
+                                  type listener capture?)
   ((js:get-property node "removeEventListener")
-   event-name listener capture?))
+   type listener capture?))
+
 
 ;; attributes
 
