@@ -1,10 +1,16 @@
 (define-module dom
-  import: (core))
+  import: (core)
+  export: (<element>))
+
+(define <element> (js:identifier "Element"))
 
 ;; elements
 
-(define-function create-element (name)
-  ((js:get-property document "createElement") name))
+(define-function create-element (name #key class)
+  (js:var element ((js:get-property document "createElement") name))
+  (when class
+    (add-class element class))
+  element)
 
 (define-fucntion create-text-node (text)
   ((js:get-property document "createTextNode") text))
@@ -54,6 +60,15 @@
 
 (define-generic prevent-default (event))
 
+(define-function add-event-listener (object event-name listener)
+  (unless (has? object "%listeners")
+    (set! (get object "%listeners")
+          (make-object)))
+  (bind ((listeners (or (get object "%listeners" event-name)
+                        (set! (get object "%listeners" event-name)
+                              (make-array)))))
+    (push-last listeners listener)))
+
 ;; attributes
 
 (define-function attribute (element name)
@@ -65,14 +80,16 @@
 
 ;; classes
 
+(define-function has-class? (element class)
+  (true? (position
+          (concatenate " " (js:get-property element "className") " ")
+          (concatenate " " class " "))))
+
 (define-function add-class (element class)
-  (js:var classes (js:get-property element "className"))
-  (set! (js:get-property element "className")
-        (trim (concatenate classes
-                           (if (position (concatenate " " classes " ")
-                                         (concatenate " " class " "))
-                               ""
-                               (concatenate " " class)))))
+  (unless (has-class? element class)
+    (js:var classes (js:get-property element "className"))
+    (set! (js:get-property element "className")
+          (trim (concatenate classes " " class))))
   element)
 
 (define-function remove-class (element class)
