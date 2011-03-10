@@ -1,0 +1,63 @@
+(define-module dom
+  import: (core))
+
+;; elements
+
+(define-function create-element (name)
+  ((js:get-property document "createElement") name))
+
+(define-fucntion create-text-node (text)
+  ((js:get-property document "createTextNode") text))
+
+(define-generic append-child (parent child))
+
+(define-generic remove-child (parent child)
+
+(define-function delete-element (element)
+  (if-bind (parent (get element "parentNode"))
+    (begin
+     (remove-child parent element)
+     #t)))
+
+;; query
+
+(define-function query-id (id)
+  ((js:get-property document "getElementById") id))
+
+(define-function query-class (element class)
+  ((js:get-property element "getElementsByClassName") class))
+
+(define-generic query-selector (element query))
+
+(define-generic query-selector-all (element query))
+
+;; dimensions
+
+(define-generic element-height (element)
+  (js:get-property element "offsetHeight"))
+
+(define-generic element-width (element)
+  (js:get-property element "offsetWidth"))
+
+(define-generic element-position (element)
+  (make-array
+   (js:get-property element "offsetLeft")
+   (js:get-property element "offsetTop")))
+
+;; events
+
+(define-generic add-event-listener (element event-name listener capture?))
+
+(define-generic remove-event-listener (element event-name listener capture?))
+
+(define-generic stop-propagation (event))
+
+(define-generic prevent-default (event))
+
+;; attributes
+
+(define-function attribute (element name)
+  ((js:get-property element "getAttribute") name))
+
+(define-function (setter attribute) (element name new-value)
+  ((js:get-property element "setAttribute") name new-value))
