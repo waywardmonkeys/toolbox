@@ -12,12 +12,12 @@
     (add-class element class))
   element)
 
-(define-fucntion create-text-node (text)
+(define-function create-text-node (text)
   ((js:get-property document "createTextNode") text))
 
 (define-generic append-child (parent child))
 
-(define-generic remove-child (parent child)
+(define-generic remove-child (parent child))
 
 (define-function delete-element (element)
   (if-bind (parent (get element "parentNode"))
