@@ -61,3 +61,24 @@
 
 (define-function (setter attribute) (element name new-value)
   ((js:get-property element "setAttribute") name new-value))
+
+
+;; classes
+
+(define-function add-class (element class)
+  (js:var classes (js:get-property element "className"))
+  (set! (js:get-property element "className")
+        (trim (concatenate classes
+                           (if (position (concatenate " " classes " ")
+                                         (concatenate " " class " "))
+                               ""
+                               (concatenate " " class)))))
+  element)
+
+(define-function remove-class (element class)
+  (js:var classes (js:get-property element "className"))
+  (set! (js:get-property element "className")
+        (trim (replace (concatenate " " class " ")
+                       (concatenate " " classes " ")
+                       " ")))
+  element)
