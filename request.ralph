@@ -1,0 +1,26 @@
+(define-module request
+  import: (core))
+
+(define-function make-request (url callback
+                               #key (method "GET") (asynchronous? #t))
+  (js:var request (js:new (js:identifier "XMLHttpRequest")))
+  (when asynchronous?
+    (set! (js:get=property request "onreadystatechange")
+          (method (event)
+            (when (and (== (js:get-property request "readyState") 4)
+                       (== (js:get-property request "status") 200))
+              (callback (js:get-property request "responseText"))))))
+  ((js:get-property request "open") method url asynchronous?)
+  request)
+
+;; events for reuquest (name, capture?):
+;; - "progress", #f:
+;;   event.lengthComputable => event.loaded, event.total
+;; - "load", #f:
+;;   transfer complete
+;; - "error", #f:
+;;   transfer failed
+;; - "abort", #f:
+;;   transfer has been canceled
+
+(define-generic send (request data))
