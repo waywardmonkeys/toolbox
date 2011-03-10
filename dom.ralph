@@ -46,16 +46,24 @@
 
 ;; dimensions
 
-(define-generic element-height (element)
+(define-function element-height (element)
   (js:get-property element "offsetHeight"))
 
-(define-generic element-width (element)
+(define-function element-width (element)
   (js:get-property element "offsetWidth"))
 
-(define-generic element-position (element)
+(define-function element-position (element)
   (make-array
    (js:get-property element "offsetLeft")
    (js:get-property element "offsetTop")))
+
+(define-function (setter element-height) (element height)
+  (set! (js:get-property element "style" "height")
+        (concatenate (as-string height) "px")))
+
+(define-function (setter element-width) (element width)
+  (set! (js:get-property element "style" "width")
+        (concatenate (as-string width) "px")))
 
 ;; events
 
