@@ -50,10 +50,11 @@
 (define-function element-width (element)
   (js:get-property element "offsetWidth"))
 
-(define-function element-position (element)
-  (make-array
-   (js:get-property element "offsetLeft")
-   (js:get-property element "offsetTop")))
+(define-function element-top (element)
+  (js:get-property element "offsetTop"))
+
+(define-function element-left (element)
+  (js:get-property element "offsetLeft"))
 
 (define-function (setter element-height) (element height)
   (set! (js:get-property element "style" "height")
@@ -62,6 +63,14 @@
 (define-function (setter element-width) (element width)
   (set! (js:get-property element "style" "width")
         (concatenate (as-string width) "px")))
+
+(define-function (setter element-left) (element left)
+  (set! (js:get-property element "style" "left")
+        (concatenate (as-string left) "px")))
+
+(define-function (setter element-top) (element top)
+  (set! (js:get-property element "style" "top")
+        (concatenate (as-string top) "px")))
 
 ;; events
 
