@@ -1,0 +1,10 @@
+(define-module serialization
+  import: (core))
+
+(define-generic encode-json (object))
+
+(define-function encode-json (object)
+  ((js:get-property "JSON" "stringify") object))
+
+(define-function decode-json ((string <string>))
+  ((js:get-property "JSON" "parse") string))
