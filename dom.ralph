@@ -1,11 +1,12 @@
 (define-module dom
   import: (runtime/core)
-  export: (<element> add-child log add-listener))
+  export: (<element> <node> add-child log add-listener))
 
 (define-function log (#rest objects)
   ((js:get-property console "log" "apply") console objects))
 
 (define <element> (js:identifier "Element"))
+(define <node> (js:identifier "Node"))
 
 ;; elements
 
@@ -64,8 +65,8 @@
 
 (define-generic add-listener (object event-name listener))
 
-(define-function add-listener ((element <element>) event-name listener capture?)
-  ((js:get-property element "addEventListener") event-name listener capture?))
+(define-function add-listener ((node <node>) event-name listener capture?)
+  ((js:get-property node "addEventListener") event-name listener capture?))
 
 (define-function add-listener ((object <object>) event-name listener)
   (unless (has? object "%listeners")
@@ -79,9 +80,9 @@
 
 (define-generic remove-listener (object event-name listener))
 
-(define-function remove-listener ((element <element>)
+(define-function remove-listener ((node <node>)
                                   event-name listener capture?)
-  ((js:get-property element "removeEventListener")
+  ((js:get-property node "removeEventListener")
    event-name listener capture?))
 
 ;; attributes
