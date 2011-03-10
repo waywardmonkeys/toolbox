@@ -1,5 +1,5 @@
 (define-module serialization
-  import: (core))
+  import: (runtime/core))
 
 (define-generic encode-json (object))
 

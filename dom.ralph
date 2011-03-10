@@ -1,5 +1,5 @@
 (define-module dom
-  import: (core)
+  import: (runtime/core)
   export: (<element>))
 
 (define <element> (js:identifier "Element"))

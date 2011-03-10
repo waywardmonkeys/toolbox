@@ -1,5 +1,5 @@
 (define-module request
-  import: (core))
+  import: (runtime/core))
 
 (define-function make-request (url callback
                                #key (method "GET") (asynchronous? #t))
