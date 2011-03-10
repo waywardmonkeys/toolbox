@@ -1,6 +1,9 @@
 (define-module dom
   import: (runtime/core)
-  export: (<element>))
+  export: (<element> add-child log add-listener))
+
+(define-function log (#rest objects)
+  ((js:get-property console "log" "apply") console objects))
 
 (define <element> (js:identifier "Element"))
 
@@ -15,7 +18,10 @@
 (define-function create-text-node (text)
   ((js:get-property document "createTextNode") text))
 
-(define-generic append-child (parent child))
+(define-generic add-child (parent child))
+
+(define-function add-child ((parent <element>) (child <element>))
+  ((js:get-property parent "appendChild") child))
 
 (define-generic remove-child (parent child))
 
@@ -52,15 +58,16 @@
 
 ;; events
 
-(define-generic add-event-listener (element event-name listener capture?))
-
-(define-generic remove-event-listener (element event-name listener capture?))
-
 (define-generic stop-propagation (event))
 
 (define-generic prevent-default (event))
 
-(define-function add-event-listener (object event-name listener)
+(define-generic add-listener (object event-name listener))
+
+(define-function add-listener ((element <element>) event-name listener capture?)
+  ((js:get-property element "addEventListener") event-name listener capture?))
+
+(define-function add-listener ((object <object>) event-name listener)
   (unless (has? object "%listeners")
     (set! (get object "%listeners")
           (make-object)))
@@ -68,6 +75,14 @@
                         (set! (get object "%listeners" event-name)
                               (make-array)))))
     (push-last listeners listener)))
+
+
+(define-generic remove-listener (object event-name listener))
+
+(define-function remove-listener ((element <element>)
+                                  event-name listener capture?)
+  ((js:get-property element "removeEventListener")
+   event-name listener capture?))
 
 ;; attributes
 
