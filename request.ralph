@@ -1,11 +1,13 @@
 (define-module request
-  import: (runtime/core))
+  import: (runtime/core)
+  export: (<request> send))
 
-(define-function make-request (url callback
-                               #key (method "GET") (asynchronous? #t))
-  (js:var request (js:new (js:identifier "XMLHttpRequest")))
+(define <request> (js:identifier "XMLHttpRequest"))
+
+(define-function initialize ((request <request>) #key url callback
+                             (method "GET") (asynchronous? #t))
   (when asynchronous?
-    (set! (js:get=property request "onreadystatechange")
+    (set! (js:get-property request "onreadystatechange")
           (method (event)
             (when (and (== (js:get-property request "readyState") 4)
                        (== (js:get-property request "status") 200))
@@ -23,4 +25,5 @@
 ;; - "abort", #f:
 ;;   transfer has been canceled
 
-(define-generic send (request data))
+(define-function send ((request <request>) data)
+  ((js:get-property request "send") data))
