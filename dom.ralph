@@ -149,3 +149,25 @@
                        (concatenate " " classes " ")
                        " ")))
   element)
+
+;; animation
+
+;; TODO: turn into macro
+
+(define *transition-end-events*
+  (make-array
+   "webkitTransitionEnd"
+   "transitionend"
+   "oTransitionEnd"))
+
+(define-function animate (element function)
+  (bind-methods ((remove ()
+                   (remove-class element "animating")
+                   (do (method (event)
+                         (remove-listener element event remove #f))
+                       *transition-end-events*)))
+    (add-class element "animating")
+    (do (method (event)
+          (add-listener element event remove #f))
+        *transition-end-events*)
+    (function)))
