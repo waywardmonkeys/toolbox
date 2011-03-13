@@ -171,3 +171,8 @@
           (add-listener element event remove #f))
         *transition-end-events*)
     (function)))
+
+;;
+
+(define-function focus (element)
+  ((js:get-property element "focus")))
