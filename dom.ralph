@@ -10,10 +10,12 @@
 
 ;; elements
 
-(define-function create-element (name #key class)
+(define-function create-element (name #key class parent)
   (js:var element ((js:get-property document "createElement") name))
   (when class
     (add-class element class))
+  (when parent
+    (append-child parent element))
   element)
 
 (define-function create-text-node (text)
