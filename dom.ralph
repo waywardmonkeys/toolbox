@@ -108,10 +108,10 @@
   ((js:get-property node "dispatchEvent") event))
 
 (define-function trigger-event ((object <object>) (event <event>))
-  (set! (get event "target") object)
+  (set! (js:get-property event "target") object)
   (do (method (listener)
         (listener event))
-      (or (get object "%listeners" (get event "type"))
+      (or (get object "%listeners" (js:get-property event "type"))
           (make-array))))
 
 (define-function make-event (type #key bubble? cancelable?)
