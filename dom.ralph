@@ -1,9 +1,11 @@
 (define-module dom
   import: (runtime/core)
-  export: (<element> <node> append-child log add-listener))
+  export: (<element> <node> body append-child log add-listener))
 
 (define-function log (#rest objects)
   ((js:get-property console "log" "apply") console objects))
+
+(define body (js:get-property document "body"))
 
 (define <element> (js:identifier "Element"))
 (define <node> (js:identifier "Node"))
