@@ -24,10 +24,11 @@
 (define-function append-child ((parent <element>) (child <element>))
   ((js:get-property parent "appendChild") child))
 
-(define-generic remove-child (parent child))
+(define-function remove-child ((parent <element>) (child <element>))
+  ((js:get-property parent "removeChild") child))
 
 (define-function delete-element (element)
-  (if-bind (parent (get element "parentNode"))
+  (if-bind (parent (js:get-property element "parentNode"))
     (begin
      (remove-child parent element)
      #t)))
