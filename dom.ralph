@@ -33,6 +33,14 @@
      (remove-child parent element)
      #t)))
 
+(define-function delete-children ((element <element>))
+  (js:var child)
+  (js:while (set! child (js:get-property element "firstChild"))
+    (remove-child element child)))
+
+(define-function parent-element ((element <element>))
+  (js:get-property element "parentNode"))
+
 ;; query
 
 (define-function query-id (id)
