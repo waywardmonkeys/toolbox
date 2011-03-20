@@ -177,8 +177,8 @@
 (define-function remove-class (element class)
   (js:var classes (js:get-property element "className"))
   (set! (js:get-property element "className")
-        (trim (replace (concatenate " " class " ")
-                       (concatenate " " classes " ")
+        (trim (replace (concatenate " " classes " ")
+                       (concatenate " " class " ")
                        " ")))
   element)
 
