@@ -26,11 +26,25 @@
 (define-function append-child ((parent <element>) (child <element>))
   ((js:get-property parent "appendChild") child))
 
+(define-function prepend-child ((parent <element>) (child <element>))
+  (insert-before parent child
+                 (js:get-property parent "firstChild")))
+
+(define-function insert-before ((element <element>) (reference <element>))
+  ((js:get-property (parent reference) "insertBefore")
+   element reference))
+
+(define-function insert-after ((element <element>) (reference <element>))
+  (insert-before element (js:get-property reference "nextSibling")))
+
 (define-function remove-child ((parent <element>) (child <element>))
   ((js:get-property parent "removeChild") child))
 
+(define-function parent ((element <element>))
+  (js:get-property element "parentNode"))
+
 (define-function delete-element (element)
-  (if-bind (parent (js:get-property element "parentNode"))
+  (if-bind (parent (parent element))
     (begin
      (remove-child parent element)
      #t)))
