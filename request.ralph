@@ -37,3 +37,14 @@
 ;;   transfer failed
 ;; - "abort", #f:
 ;;   transfer has been canceled
+
+(define encode-component (js:identifier "encodeURIComponent"))
+
+(define-function encode (object)
+  (bind ((key-values (map (method (key)
+                            (concatenate (encode-component key) "="
+                                         (encode-component (get object key))))
+                          (keys object))))
+    (replace (join key-values "&")
+             (make <regexp> pattern: "%20" global?: #t)
+             "+")))
