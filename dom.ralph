@@ -209,5 +209,5 @@
 
 ;;
 
-(define-function focus (element)
+(define-function focus-element ((element <element>))
   ((js:get-property element "focus")))
