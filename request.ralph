@@ -1,8 +1,9 @@
 (define-module request
-  import: (runtime/core)
+  import: (runtime/core runtime/regexp)
   export: (<request> send))
 
-(define-class <request> ())
+(define-class <request> ()
+  in-progress?)
 
 (define-function initialize ((request <request>)
                              #key url (method "GET") (asynchronous? #t))
@@ -12,6 +13,7 @@
       (set! (js:get-property xhr "onreadystatechange")
             (method (event)
               (when (== (js:get-property xhr "readyState") 4)
+                (set! (get request "in-progress?") #f)
                 (if (== (js:get-property xhr "status") 200)
                     (bind ((data (js:get-property xhr "responseText")))
                       (trigger-event request
@@ -20,7 +22,11 @@
     ((js:get-property xhr "open") method url asynchronous?)))
 
 (define-function send ((request <request>) data)
+  (set! (get request "in-progress?") #t)
   ((js:get-property request "xhr" "send") data))
+
+(define-function cancel ((request <request>))
+  ((js:get-property request "xhr" "abort")))
 
 ;; events for XHR transfer (name, capture?):
 ;; - "progress", #f:
