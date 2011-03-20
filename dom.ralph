@@ -141,9 +141,17 @@
       (or (get object "%listeners" (js:get-property event "type"))
           (make-array))))
 
-(define-function make-event (type #key bubble? cancelable?)
+(define-function make-event (type #rest rest #key bubble? cancelable?)
   (js:var event ((js:get-property document "createEvent") "Event"))
   ((js:get-property event "initEvent") type bubble? cancelable?)
+  (for ((i 0 (js:+ i 2)))
+       ((js:>= i (size rest)))
+    (js:var key (js:get-property rest i))
+    (js:var value (js:get-property rest (js:+ i 1)))
+    (unless (or (== key (symbol "bubble?"))
+                (== key (symbol "cancelable?")))
+      (set! (js:get-property event (symbol-name key))
+            value)))
   event)
 
 ;; attributes
