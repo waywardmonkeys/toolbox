@@ -65,9 +65,11 @@
 (define-function query-class (element class)
   ((js:get-property element "getElementsByClassName") class))
 
-(define-generic query-selector (element query))
+(define-function query-selector (element query)
+  ((js:get-property element "querySelector") query))
 
-(define-generic query-selector-all (element query))
+(define-function query-selector-all (element query)
+  ((js:get-property element "querySelectorAll") query))
 
 ;; dimensions
 
