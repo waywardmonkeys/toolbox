@@ -5,8 +5,8 @@
 (define-class <request> ()
   in-progress?)
 
-(define-function initialize ((request <request>)
-                             #key url (method "GET") (asynchronous? #t))
+(define-function initialize ((request <request>) #key url
+                             (method "GET") (asynchronous? #t) binary?)
   (bind ((xhr (set! (get request "xhr")
                     (make (js:identifier "XMLHttpRequest")))))
     (when asynchronous?
@@ -16,14 +16,27 @@
                 (set! (get request "in-progress?") #f)
                 (cond
                  ((== (js:get-property xhr "status") 200)
-                  (bind ((data (js:get-property xhr "responseText")))
+                  (bind ((text (js:get-property xhr "responseText"))
+                         (data ""))
+                    (when binary?
+                      (do (method (char)
+                            (set! data
+                                  (js:+ data
+                                        ((js:get-property "String" "fromCharCode")
+                                         (js:& ((js:get-property char "charCodeAt") 0)
+                                               0xff)))))
+                          (as-array text)))
                     (trigger-event request
-                                   (make-event "data" data: data))))
+                                   (make-event "data" data: (if binary? data text)))))
                  ((get request "cancelled?")
                   (trigger-event request (make-event "cancel")))
                  (else:
                   (trigger-event request (make-event "error"))))))))
-    ((js:get-property xhr "open") method url asynchronous?)))
+    ((js:get-property xhr "open") method url asynchronous?)
+    (when binary?
+      ((js:get-property xhr "overrideMimeType")
+       "text/plain; charset=x-user-defined"))))
+
 
 (define-function send ((request <request>) data)
   (set! (get request "in-progress?") #t)
