@@ -191,24 +191,17 @@
 ;; classes
 
 (define-function has-class? (element class)
-  (true? (position
-          (concatenate " " (js:get-property element "className") " ")
-          (concatenate " " class " "))))
+  ((js:get-property element "classList" "contains") class))
 
 (define-function add-class (element class)
-  (unless (has-class? element class)
-    (js:var classes (js:get-property element "className"))
-    (set! (js:get-property element "className")
-          (trim (concatenate classes " " class))))
-  element)
+  ((js:get-property element "classList" "add") class))
 
 (define-function remove-class (element class)
-  (js:var classes (js:get-property element "className"))
-  (set! (js:get-property element "className")
-        (trim (replace (concatenate " " classes " ")
-                       (concatenate " " class " ")
-                       " ")))
-  element)
+  ((js:get-property element "classList" "remove") class))
+
+(define-function toggle-class (element class)
+  ((js:get-property element "classList" "toggle") class))
+
 
 ;; animation
 
