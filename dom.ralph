@@ -50,9 +50,11 @@
      #t)))
 
 (define-function delete-children ((element <element>))
-  (js:var child)
-  (js:while (set! child (js:get-property element "firstChild"))
-    (remove-child element child)))
+  ;; NB: don't use firstChild, as it causes heavy
+  ;; relayouting of an element with many elements
+  (js:while (js:get-property element "lastChild")
+    ((js:get-property element "removeChild")
+     (js:get-property element "lastChild"))))
 
 ;; query
 
