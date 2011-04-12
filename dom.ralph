@@ -1,6 +1,7 @@
 (define-module dom
   import: (runtime/core)
-  export: (<element> <node> body append-child log add-listener))
+  export: (<element> <node> body append-child log add-listener
+           make-element make-event))
 
 (define-function log (#rest objects)
   ((js:get-property console "log" "apply") console objects))
@@ -12,7 +13,7 @@
 
 ;; elements
 
-(define-function create-element (name #key class parent)
+(define-function make-element (name #key class parent)
   (js:var element ((js:get-property document "createElement") name))
   (when class
     (add-class element class))
