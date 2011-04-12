@@ -20,10 +20,13 @@
                 (get component "element")))
 
 (define-function show ((component <component>))
-  (add-class (get component "element") "active"))
+  (remove-class (get component "element") "hidden"))
+
+(define-function hidden? ((component <component>))
+  (has-class? (get component "element") "hidden"))
 
 (define-function hide ((component <component>))
-  (remove-class (get component "element") "active"))
+  (add-class (get component "element") "hidden"))
 
 
 (define-generic update (component))
