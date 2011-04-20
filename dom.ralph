@@ -21,9 +21,10 @@
     (append-child parent element))
   element)
 
-(define-function create-text-node (text)
+(define-function make-text-node (text)
   ((js:get-property document "createTextNode") text))
 
+(define-function children ((element <element>))
 (define-function append-child ((parent <element>) (child <element>))
   ((js:get-property parent "appendChild") child))
 
