@@ -6,7 +6,8 @@
   in-progress?)
 
 (define-function initialize ((request <request>) #key url
-                             (method "GET") (asynchronous? #t) binary?)
+                             (method "GET") (asynchronous? #t)
+                             content-type binary?)
   (bind ((xhr (set! (get request "xhr")
                     (make (js:identifier "XMLHttpRequest")))))
     (when asynchronous?
@@ -33,6 +34,9 @@
                  (else:
                   (trigger-event request (make-event "error"))))))))
     ((js:get-property xhr "open") method url asynchronous?)
+    (when content-type
+      ((js:get-property xhr "setRequestHeader")
+       "Content-Type" content-type))
     (when binary?
       ((js:get-property xhr "overrideMimeType")
        "text/plain; charset=x-user-defined"))))
