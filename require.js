@@ -24,7 +24,6 @@ function _e (exports, _code) {
          req.open("GET", dirname(document.location.href) + path, true);
          req.onreadystatechange = function () {
              if (req.readyState == 4) {
-                 console.log("status:" + req.status);
                  if ((req.status == 200)
                      || (req.status == 0))
                  {
