@@ -1,0 +1,12 @@
+(define-module storage
+  import: (runtime/core)
+  export: (locally-stored))
+
+(define-function locally-stored (key)
+  ((js:get-property window "localStorage" "getItem")
+   key))
+
+(define-function (setter locally-stored) (key value)
+  ((js:get-property window "localStorage" "setItem")
+   key value)
+  value)
