@@ -1,0 +1,22 @@
+(define-module chain
+  import: (runtime/core toolbox/dom)
+  export: (done fail chain))
+
+;; call asynchronous functions in sequence
+
+(define-function done (function #rest rest)
+  (trigger-event function (apply make-event "done" rest)))
+
+(define-function fail (function)
+  (trigger-event function (apply make-event "fail" rest)))
+
+;; each function needs to trigger "done" or "fail"
+
+(define-function chain (#rest actions)
+  (unless (empty? actions)
+    (bind ((current (first actions))
+           (done (method ()
+                   (remove-listener current "done" done)
+                   (apply chain (rest actions)))))
+          (add-listener current "done" done)
+          (current))))
