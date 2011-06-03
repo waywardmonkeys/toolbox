@@ -1,0 +1,22 @@
+(define-module location
+  import: (runtime/core)
+  export: (get-position))
+
+(define-function get-position (success
+                               #key error maximum-age timeout high-accuracy?)
+  ((js:get-property navigator "geolocation" "getCurrentPosition")
+   success error))
+   ;; (make-object "maximumAge" maximum-age
+   ;;              "timeout" timeout
+   ;;              "enableHighAccuracy" high-accuracy?)))
+
+(define-function watch-position (success
+                                 #key error maximum-age timeout high-accuracy?)
+  ((js:get-property navigator "geolocation" "watchPosition")
+   function error))
+   ;; (make-object "maximumAge" maximum-age
+   ;;              "timeout" timeout
+   ;;              "enableHighAccuracy" high-accuracy?)))
+
+(define-function clear-position-watch (id)
+  ((js:get-property geolocation "clearWatch") id))
