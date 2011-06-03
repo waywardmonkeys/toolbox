@@ -7,6 +7,9 @@
    key))
 
 (define-function (setter locally-stored) (key value)
-  ((js:get-property window "localStorage" "setItem")
-   key value)
+  (if value
+      ((js:get-property window "localStorage" "setItem")
+       key value)
+      ((js:get-property window "localStorage" "removeItem")
+       key))
   value)
