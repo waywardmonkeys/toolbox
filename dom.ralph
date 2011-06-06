@@ -185,6 +185,22 @@
             value)))
   event)
 
+(define-function actual-event ((event <event>))
+ (bind ((touches (get event "touches")))
+     (if (empty? touches)
+         event
+         (first touches))))
+
+(define-function event-page-position ((event <event>))
+  (bind ((e (actual-event event)))
+    [(get e "pageX")
+     (get e "pageY")]))
+
+(define-function event-client-position ((event <event>))
+  (bind ((e (actual-event event)))
+    [(get e "clientX")
+     (get e "clientY")]))
+
 ;; attributes
 
 (define-function attribute (element name)
