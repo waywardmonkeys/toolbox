@@ -10,6 +10,7 @@
 
 (define <element> (js:identifier "Element"))
 (define <node> (js:identifier "Node"))
+(define <event> (js:identifier "Event"))
 
 ;; elements
 
@@ -138,6 +139,7 @@
 
 (define-generic prevent-default (event))
 
+
 (define-generic add-listener (object type listener))
 
 (define-function add-listener ((node <node>) type listener capture?)
@@ -155,10 +157,9 @@
 
 (define-generic remove-listener (object type listener))
 
-(define-function remove-listener ((node <node>)
-                                  type listener capture?)
-  ((js:get-property node "removeEventListener")
-   type listener capture?))
+(define-function remove-listener ((node <node>) type listener capture?)
+  ((js:get-property node "removeEventListener") type listener capture?))
+
 
 (define-generic trigger-event (object (event <event>)))
 
@@ -171,6 +172,7 @@
         (listener event))
       (or (get object "%listeners" (js:get-property event "type"))
           (make-array))))
+
 
 (define-function make-event (type #rest rest #key bubble? cancelable?)
   (js:var event ((js:get-property document "createEvent") "Event"))
