@@ -201,7 +201,10 @@
 (define-function event-client-position ((event <event>))
   (bind ((e (actual-event event)))
     [(get e "clientX")
-     (get e "clientY")]))
+    (get e "clientY")]))
+
+(define-function changed-touches ((event <event>))
+  (as-array (js:get-property event "changedTouches")))
 
 ;; attributes
 
