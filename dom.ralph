@@ -117,20 +117,23 @@
 (define-function element-left (element)
   (js:get-property element "offsetLeft"))
 
+(define-function (setter element-style) ((element <element>) name value)
+  (set! (js:get-property element "style" name) value))
+
 (define-function (setter element-height) (element height)
-  (set! (js:get-property element "style" "height")
+  (set! (element-style element "height")
         (concatenate (as-string height) "px")))
 
 (define-function (setter element-width) (element width)
-  (set! (js:get-property element "style" "width")
+  (set! (element-style element "width")
         (concatenate (as-string width) "px")))
 
 (define-function (setter element-left) (element left)
-  (set! (js:get-property element "style" "left")
+  (set! (element-style element "left")
         (concatenate (as-string left) "px")))
 
 (define-function (setter element-top) (element top)
-  (set! (js:get-property element "style" "top")
+  (set! (element-style element "top")
         (concatenate (as-string top) "px")))
 
 ;; events
