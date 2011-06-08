@@ -117,6 +117,12 @@
 (define-function element-left (element)
   (js:get-property element "offsetLeft"))
 
+(define-function element-content-height (element)
+  (js:get-property element "scrollHeight"))
+
+(define-function element-content-width (element)
+  (js:get-property element "scrollWidth"))
+
 (define-function (setter element-style) ((element <element>) name value)
   (set! (js:get-property element "style" name) value))
 
