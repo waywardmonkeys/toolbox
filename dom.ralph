@@ -190,24 +190,20 @@
             value)))
   event)
 
-(define-function actual-event ((event <event>))
- (bind ((touches (get event "touches")))
-     (if (empty? touches)
-         event
-         (first touches))))
-
 (define-function event-page-position ((event <event>))
-  (bind ((e (actual-event event)))
-    [(get e "pageX")
-     (get e "pageY")]))
+  [(get event "pageX") (get event "pageY")])
 
 (define-function event-client-position ((event <event>))
-  (bind ((e (actual-event event)))
-    [(get e "clientX")
-    (get e "clientY")]))
+  [(get event "clientX") (get event "clientY")])
 
 (define-function changed-touches ((event <event>))
   (as-array (js:get-property event "changedTouches")))
+
+(define-function target-touches ((event <event>))
+  (as-array (js:get-property event "targetTouches")))
+
+(define-function touches ((event <event>))
+  (as-array (js:get-property event "touches")))
 
 ;; attributes
 
