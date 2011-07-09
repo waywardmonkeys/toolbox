@@ -241,9 +241,6 @@
 
 ;; classes
 
-(define-function has-class? (element class)
-  ((js:get-property element "classList" "contains") class))
-
 (define-function add-class (element class)
   ((js:get-property element "classList" "add") class))
 
@@ -252,6 +249,15 @@
 
 (define-function toggle-class (element class)
   ((js:get-property element "classList" "toggle") class))
+
+(define-function has-class? (element class)
+  ((js:get-property element "classList" "contains") class))
+
+(define-function (setter has-class?) (element class enabled?)
+  ((if enabled?
+       add-class
+       remove-class)
+   element class))
 
 ;;
 
