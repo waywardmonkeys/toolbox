@@ -168,7 +168,7 @@
 (define-generic prevent-default (event))
 
 
-(define-generic add-listener (object type listener))
+(define-generic add-listener (object type listener capture?))
 
 (define-function add-listener ((node <node>) type listener capture?)
   ((js:get-property node "addEventListener") type listener capture?))
@@ -183,7 +183,7 @@
     (push-last listeners listener)))
 
 
-(define-generic remove-listener (object type listener))
+(define-generic remove-listener (object type listener capture?))
 
 (define-function remove-listener ((node <node>) type listener capture?)
   ((js:get-property node "removeEventListener") type listener capture?))
@@ -221,13 +221,13 @@
 (define-function event-client-position ((event <event>))
   [(get event "clientX") (get event "clientY")])
 
-(define-function changed-touches ((event <event>))
+(define-function event-changed-touches ((event <event>))
   (as-array (js:get-property event "changedTouches")))
 
-(define-function target-touches ((event <event>))
+(define-function event-target-touches ((event <event>))
   (as-array (js:get-property event "targetTouches")))
 
-(define-function touches ((event <event>))
+(define-function event-touches ((event <event>))
   (as-array (js:get-property event "touches")))
 
 ;; attributes
