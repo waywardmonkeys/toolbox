@@ -111,6 +111,12 @@
 (define-function element-width (element)
   (js:get-property element "offsetWidth"))
 
+(define-function element-inner-height (element)
+  (js:get-property element "clientHeight"))
+
+(define-function element-inner-width (element)
+  (js:get-property element "clientWidth"))
+
 (define-function element-top (element)
   (js:get-property element "offsetTop"))
 
@@ -122,6 +128,12 @@
 
 (define-function element-content-width (element)
   (js:get-property element "scrollWidth"))
+
+(define-function element-text (element)
+  (js:get-property element "innerText"))
+
+(define-function (setter element-text) (element text)
+  (set! (js:get-property element "innerText") text))
 
 (define-function (setter element-style) ((element <element>) name value)
   (set! (js:get-property element "style" name) value))
@@ -145,6 +157,9 @@
 (define-function (setter element-visibility) (element visible?)
    (set! (element-style element "visibility")
          (if visible? "visible" "hidden")))
+
+(define-function element-bounds (element)
+  ((js:get-property element "getBoundingClientRect")))
 
 ;; events
 
