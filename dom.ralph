@@ -92,7 +92,8 @@
   (js:get-property element "innerText"))
 
 (define-function (setter element-text) (element text)
-  (set! (js:get-property element "innerText") text))
+  (delete-children element)
+  (append-child element (make-text-node text)))
 
 (define-function (setter element-style) ((element <element>) name value)
   (set! (js:get-property element "style" name) value))
