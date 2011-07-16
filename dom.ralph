@@ -4,16 +4,16 @@
            make-element make-event))
 
 (define-function log (#rest objects)
-  ((js:identifier "Function.prototype.apply.call")
+  ((js:inline "Function.prototype.apply.call")
    (js:get-property console "log")
    console objects))
 
 
 (define body (js:get-property document "body"))
 
-(define <element> (js:identifier "Element"))
-(define <node> (js:identifier "Node"))
-(define <event> (js:identifier "Event"))
+(define <element> (js:inline "Element"))
+(define <node> (js:inline "Node"))
+(define <event> (js:inline "Event"))
 
 ;; elements
 
@@ -142,25 +142,25 @@
                   (if namespaces
                       (curry get namespaces)
                     js:null)
-                  (js:identifier "XPathResult.ANY_TYPE")
+                  (js:inline "XPathResult.ANY_TYPE")
                   js:null))
   (js:var result-type (js:get-property result "resultType"))
   (select result-type ==
-   (((js:identifier "XPathResult.ORDERED_NODE_ITERATOR_TYPE")
-     (js:identifier "XPathResult.UNORDERED_NODE_ITERATOR_TYPE"))
+   (((js:inline "XPathResult.ORDERED_NODE_ITERATOR_TYPE")
+     (js:inline "XPathResult.UNORDERED_NODE_ITERATOR_TYPE"))
     (bind ((current)
            (nodes []))
       (while (set! current ((js:get-property result "iterateNext")))
         (push-last nodes current))
       nodes))
-   (((js:identifier "XPathResult.STRING_TYPE"))
+   (((js:inline "XPathResult.STRING_TYPE"))
     (js:get-property result "stringValue"))
-   (((js:identifier "XPathResult.NUMBER_TYPE"))
+   (((js:inline "XPathResult.NUMBER_TYPE"))
     (js:get-property result "numberValue"))
-   (((js:identifier "XPathResult.BOOLEAN_TYPE"))
+   (((js:inline "XPathResult.BOOLEAN_TYPE"))
     (js:get-property result "booleanValue"))
-   (((js:identifier "XPathResult.ANY_UNORDERED_NODE_TYPE")
-     (js:identifier "XPathResult.FIRST_ORDERED_NODE_TYPE"))
+   (((js:inline "XPathResult.ANY_UNORDERED_NODE_TYPE")
+     (js:inline "XPathResult.FIRST_ORDERED_NODE_TYPE"))
     (js:get-property result "singleNodeValue"))
    (else: result)))
 
@@ -247,11 +247,11 @@
 
 (define-function event-phase ((event <event>))
   (select (js:get-property event "eventPhase") ==
-   (((js:identifier "Event.CAPTURING_PHASE"))
+   (((js:inline "Event.CAPTURING_PHASE"))
     "capturing")
-   (((js:identifier "Event.AT_TARGET"))
+   (((js:inline "Event.AT_TARGET"))
     "at-target")
-   (((js:identifier "Event.BUBBLING_PHASE"))
+   (((js:inline "Event.BUBBLING_PHASE"))
     "bubbling")
    (else:
     "unknown")))

@@ -9,7 +9,7 @@
                              (method "GET") (asynchronous? #t)
                              content-type binary?)
   (bind ((xhr (set! (get request "xhr")
-                    (make (js:identifier "XMLHttpRequest")))))
+                    (make (js:inline "XMLHttpRequest")))))
     (when asynchronous?
       (set! (js:get-property xhr "onreadystatechange")
             (method (event)
@@ -23,7 +23,7 @@
                       (do (method (char)
                             (set! data
                                   (js:+ data
-                                        ((js:identifier "String.fromCharCode")
+                                        ((js:inline "String.fromCharCode")
                                          (js:& ((js:get-property char "charCodeAt") 0)
                                                0xff)))))
                           (as-array text)))
@@ -60,7 +60,7 @@
 ;; - "abort", #f:
 ;;   transfer has been canceled
 
-(define encode-component (js:identifier "encodeURIComponent"))
+(define encode-component (js:inline "encodeURIComponent"))
 
 (define-function encode (object)
   (bind ((key-values (map (method (key)

@@ -6,16 +6,16 @@
 (define-generic encode-json (object))
 
 (define-function encode-json (object)
-  ((js:identifier "JSON.stringify") object))
+  ((js:inline "JSON.stringify") object))
 
 (define-function decode-json ((string <string>))
-  ((js:identifier "JSON.parse") string))
+  ((js:inline "JSON.parse") string))
 
 (define-function encode-xml ((document <document>))
-  (js:var serializer (make (js:identifier "XMLSerializer")))
+  (js:var serializer (make (js:inline "XMLSerializer")))
   ((js:get-property serializer "serializeToString") document))
 
 (define-function decode-xml ((string <string>))
-  (js:var parser (make (js:identifier "DOMParser")))
+  (js:var parser (make (js:inline "DOMParser")))
   ((js:get-property parser "parseFromString")
    string "text/xml"))
