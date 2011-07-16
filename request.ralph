@@ -23,7 +23,7 @@
                       (do (method (char)
                             (set! data
                                   (js:+ data
-                                        ((js:get-property "String" "fromCharCode")
+                                        ((js:identifier "String.fromCharCode")
                                          (js:& ((js:get-property char "charCodeAt") 0)
                                                0xff)))))
                           (as-array text)))

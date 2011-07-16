@@ -4,7 +4,10 @@
            make-element make-event))
 
 (define-function log (#rest objects)
-  ((js:get-property console "log" "apply") console objects))
+  ((js:identifier "Function.prototype.apply.call")
+   (js:get-property console "log")
+   console objects))
+
 
 (define body (js:get-property document "body"))
 
@@ -60,50 +63,6 @@
   (js:while (js:get-property element "lastChild")
     ((js:get-property element "removeChild")
      (js:get-property element "lastChild"))))
-
-;; query
-
-(define-function query-id (id)
-  ((js:get-property document "getElementById") id))
-
-(define-function query-class (element class)
-  ((js:get-property element "getElementsByClassName") class))
-
-(define-function query-selector (element query)
-  ((js:get-property element "querySelector") query))
-
-(define-function query-selector-all (element query)
-  (as-array ((js:get-property element "querySelectorAll") query)))
-
-(define-function query-xpath (element path #key namespaces)
-  (js:var result ((js:get-property document "evaluate")
-                  path element
-                  (if namespaces
-                      (curry get namespaces)
-                    js:null)
-                  (js:get-property "XPathResult" "ANY_TYPE")
-                  js:null))
-  (js:var result-type (js:get-property result "resultType"))
-  (select result-type ==
-   (((js:identifier "XPathResult.ORDERED_NODE_ITERATOR_TYPE")
-     (js:identifier "XPathResult.UNORDERED_NODE_ITERATOR_TYPE"))
-    (bind ((current)
-           (nodes []))
-      (while (set! current ((js:get-property result "iterateNext")))
-        (push-last nodes current))
-      nodes))
-   (((js:identifier "XPathResult.STRING_TYPE"))
-    (js:get-property result "stringValue"))
-   (((js:identifier "XPathResult.NUMBER_TYPE"))
-    (js:get-property result "numberValue"))
-   (((js:identifier "XPathResult.BOOLEAN_TYPE"))
-    (js:get-property result "booleanValue"))
-   (((js:identifier "XPathResult.ANY_UNORDERED_NODE_TYPE")
-     (js:identifier "XPathResult.FIRST_ORDERED_NODE_TYPE"))
-    (js:get-property result "singleNodeValue"))
-   (else: result)))
-
-;; dimensions
 
 (define-function element-height (element)
   (js:get-property element "offsetHeight"))
@@ -161,11 +120,61 @@
 (define-function element-bounds (element)
   ((js:get-property element "getBoundingClientRect")))
 
+
+;; query
+
+(define-function query-id (id)
+  ((js:get-property document "getElementById") id))
+
+(define-function query-class (element class)
+  ((js:get-property element "getElementsByClassName") class))
+
+(define-function query-selector (element query)
+  ((js:get-property element "querySelector") query))
+
+(define-function query-selector-all (element query)
+  (as-array ((js:get-property element "querySelectorAll") query)))
+
+(define-function query-xpath (element path #key namespaces)
+  (js:var result ((js:get-property document "evaluate")
+                  path element
+                  (if namespaces
+                      (curry get namespaces)
+                    js:null)
+                  (js:identifier "XPathResult.ANY_TYPE")
+                  js:null))
+  (js:var result-type (js:get-property result "resultType"))
+  (select result-type ==
+   (((js:identifier "XPathResult.ORDERED_NODE_ITERATOR_TYPE")
+     (js:identifier "XPathResult.UNORDERED_NODE_ITERATOR_TYPE"))
+    (bind ((current)
+           (nodes []))
+      (while (set! current ((js:get-property result "iterateNext")))
+        (push-last nodes current))
+      nodes))
+   (((js:identifier "XPathResult.STRING_TYPE"))
+    (js:get-property result "stringValue"))
+   (((js:identifier "XPathResult.NUMBER_TYPE"))
+    (js:get-property result "numberValue"))
+   (((js:identifier "XPathResult.BOOLEAN_TYPE"))
+    (js:get-property result "booleanValue"))
+   (((js:identifier "XPathResult.ANY_UNORDERED_NODE_TYPE")
+     (js:identifier "XPathResult.FIRST_ORDERED_NODE_TYPE"))
+    (js:get-property result "singleNodeValue"))
+   (else: result)))
+
+(define-function query-position (x y)
+  ((js:get-property document "elementFromPoint") x y))
+
+
+
 ;; events
 
-(define-generic stop-propagation (event))
+(define-function stop-propagation (event)
+  ((js:get-property event "stopPropagation")))
 
-(define-generic prevent-default (event))
+(define-function prevent-default (event)
+  ((js:get-property event "preventDefault")))
 
 
 (define-generic add-listener (object type listener capture?))
