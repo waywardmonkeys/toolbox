@@ -230,6 +230,10 @@
 (define-function event-client-position ((event <event>))
   [(get event "clientX") (get event "clientY")])
 
+(define-function event-screen-position ((event <event>))
+  [(get event "screenX") (get event "screenY")])
+
+
 (define-function event-changed-touches ((event <event>))
   (as-array (js:get-property event "changedTouches")))
 
@@ -238,6 +242,18 @@
 
 (define-function event-touches ((event <event>))
   (as-array (js:get-property event "touches")))
+
+
+(define-function event-phase ((event <event>))
+  (select (js:get-property event "eventPhase") ==
+   (((js:identifier "Event.CAPTURING_PHASE"))
+    "capturing")
+   (((js:identifier "Event.AT_TARGET"))
+    "at-target")
+   (((js:identifier "Event.BUBBLING_PHASE"))
+    "bubbling")
+   (else:
+    "unknown")))
 
 ;; attributes
 
