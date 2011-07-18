@@ -1,4 +1,4 @@
-(define-module storage
+(define-module toolbox/storage
   import: (runtime/core)
   export: (locally-stored))
 

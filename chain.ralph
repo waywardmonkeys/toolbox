@@ -1,4 +1,4 @@
-(define-module chain
+(define-module toolbox/chain
   import: (runtime/core toolbox/dom)
   export: (done fail chain))
 

@@ -1,4 +1,4 @@
-(define-module location
+(define-module toolbox/location
   import: (runtime/core)
   export: (get-position))
 

@@ -1,4 +1,4 @@
-(define-module request
+(define-module toolbox/request
   import: (runtime/core runtime/regexp)
   export: (<request> send))
 

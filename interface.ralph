@@ -1,4 +1,4 @@
-(define-module interface
+(define-module toolbox/interface
   import: (runtime/core toolbox/dom)
   export: (<component> show hide attach))
 
