@@ -32,7 +32,6 @@
   (as-array (js:get-property element "children")))
 
 (define-function append-child ((parent <element>) (child <element>))
-  ((js:inline "console.error") "!")
   ((js:get-property parent "appendChild") child))
 
 (define-function prepend-child ((parent <element>) (child <element>))
