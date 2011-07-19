@@ -8,6 +8,11 @@
    (js:get-property console "log")
    console objects))
 
+(define-function error (#rest objects)
+  ((js:inline "Function.prototype.apply.call")
+   (js:get-property console "error")
+   console objects))
+
 
 (define body (js:get-property document "body"))
 
