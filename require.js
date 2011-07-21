@@ -25,15 +25,14 @@ var require, define;
 	};
 
 	function ensureLoaded (dependencies, callback) {
-		var result = true;
 		for (var i = 0, n = dependencies.length; i < n; i++) {
 			var dependency = dependencies[i];
 			if (!modules.hasOwnProperty(dependency)) {
-				result = false;
 				load(dependency, callback);
+				return false;
 			}
 		};
-		return result;
+		return true;
 	}
 
 	require = function (dependencies, body) {
