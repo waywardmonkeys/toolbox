@@ -1,7 +1,21 @@
 (define-module toolbox/dom
   import: (runtime/core)
-  export: (<element> <node> body append-child log add-listener
-           make-element make-event))
+  export: (*body* *head* *document* *window*
+           <element> <node>
+           log error
+           append-child delete-element
+           add-listener remove-listener
+           event-phase event-type event-target
+           event-client-position
+           make-element make-event
+           query-selector
+           prevent-default stop-propagation trigger-event
+           add-class attribute
+           element-text element-style element-children
+           element-inner-height element-inner-width
+           element-content-height element-content-width
+           element-width element-height
+           element-visibility))
 
 (define-function log (#rest objects)
   ((js:inline "Function.prototype.apply.call")
@@ -14,16 +28,19 @@
    console objects))
 
 
-(define body (js:get-property document "body"))
+(define *window* (js:inline "parent.window"))
+(define *document* (js:inline "parent.document"))
+(define *body* (js:inline "parent.document.body"))
+(define *head* (js:inline "parent.document.head"))
 
-(define <element> (js:inline "Element"))
-(define <node> (js:inline "Node"))
-(define <event> (js:inline "Event"))
+(define <element> (js:inline "parent.Element"))
+(define <node> (js:inline "parent.Node"))
+(define <event> (js:inline "parent.Event"))
 
 ;; elements
 
 (define-function make-element (name #key class parent)
-  (js:var element ((js:get-property document "createElement") name))
+  (js:var element ((js:get-property *document* "createElement") name))
   (when class
     (add-class element class))
   (when parent
@@ -31,7 +48,7 @@
   element)
 
 (define-function make-text-node (text)
-  ((js:get-property document "createTextNode") text))
+  ((js:get-property *document* "createTextNode") text))
 
 (define-function element-children ((element <element>))
   (as-array (js:get-property element "children")))
@@ -130,7 +147,7 @@
 ;; query
 
 (define-function query-id (id)
-  ((js:get-property document "getElementById") id))
+  ((js:get-property *document* "getElementById") id))
 
 (define-function query-class (element class)
   ((js:get-property element "getElementsByClassName") class))
@@ -142,7 +159,7 @@
   (as-array ((js:get-property element "querySelectorAll") query)))
 
 (define-function query-xpath (element path #key namespaces)
-  (js:var result ((js:get-property document "evaluate")
+  (js:var result ((js:get-property *document* "evaluate")
                   path element
                   (if namespaces
                       (curry get namespaces)
@@ -170,7 +187,7 @@
    (else: result)))
 
 (define-function query-position (x y)
-  ((js:get-property document "elementFromPoint") x y))
+  ((js:get-property *document* "elementFromPoint") x y))
 
 
 
@@ -201,9 +218,8 @@
   ((js:get-property node "dispatchEvent") event))
 
 
-
 (define-function make-event (type #rest rest #key bubble? cancelable?)
-  (js:var event ((js:get-property document "createEvent") "Event"))
+  (js:var event ((js:get-property *document* "createEvent") "Event"))
   ((js:get-property event "initEvent") type bubble? cancelable?)
   (for ((i 0 (js:+ i 2)))
        ((js:>= i (size rest)))
@@ -237,14 +253,14 @@
 
 (define-function event-phase ((event <event>))
   (select (js:get-property event "eventPhase") ==
-   (((js:inline "Event.CAPTURING_PHASE"))
-    "capturing")
-   (((js:inline "Event.AT_TARGET"))
-    "at-target")
-   (((js:inline "Event.BUBBLING_PHASE"))
-    "bubbling")
-   (else:
-    "unknown")))
+    (((js:get-property <event> "CAPTURING_PHASE"))
+     "capturing")
+    (((js:get-property <event> "AT_TARGET"))
+     "at-target")
+    (((js:get-property <event> "BUBBLING_PHASE"))
+     "bubbling")
+    (else:
+     "unknown")))
 
 ;; attributes
 
