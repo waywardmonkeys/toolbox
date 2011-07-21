@@ -232,13 +232,16 @@
   event)
 
 (define-function event-page-position ((event <event>))
-  [(get event "pageX") (get event "pageY")])
+  [(js:get-property event "pageX")
+   (js:get-property event "pageY")])
 
 (define-function event-client-position ((event <event>))
-  [(get event "clientX") (get event "clientY")])
+  [(js:get-property event "clientX")
+   (js:get-property event "clientY")])
 
 (define-function event-screen-position ((event <event>))
-  [(get event "screenX") (get event "screenY")])
+  [(js:get-property event "screenX")
+   (js:get-property event "screenY")])
 
 
 (define-function event-changed-touches ((event <event>))
@@ -250,6 +253,11 @@
 (define-function event-touches ((event <event>))
   (as-array (js:get-property event "touches")))
 
+(define-function event-type ((event <event>))
+  (js:get-property event "type"))
+
+(define-function event-target ((event <event>))
+  (js:get-property event "target"))
 
 (define-function event-phase ((event <event>))
   (select (js:get-property event "eventPhase") ==
