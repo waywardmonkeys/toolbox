@@ -6,6 +6,7 @@
            append-child delete-element
            add-listener remove-listener
            event-phase event-type event-target
+           event-touches event-target-touches event-changed-touches
            event-client-position
            make-element make-event
            query-selector
