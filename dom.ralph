@@ -7,11 +7,13 @@
            add-listener remove-listener
            event-phase event-type event-target
            event-touches event-target-touches event-changed-touches
-           event-client-position
+           event-client-position event-page-position event-screen-position
            make-element make-event
-           query-selector
+           query-id query-position
+           query-xpath query-selector query-selector-all
            prevent-default stop-propagation trigger-event
-           add-class attribute
+           add-class remove-class toggle-class has-class?
+           attribute
            element-text element-style element-children
            element-inner-height element-inner-width
            element-content-height element-content-width
