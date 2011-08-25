@@ -215,9 +215,9 @@
   ((js:get-property node "removeEventListener") type listener capture?))
 
 
-(define-method trigger-event (object (event <event>)))
+(define-generic trigger-event (object (event <event>)))
 
-(define-function trigger-event ((node <node>) (event <event>))
+(define-method trigger-event ((node <node>) (event <event>))
   ((js:get-property node "dispatchEvent") event))
 
 
