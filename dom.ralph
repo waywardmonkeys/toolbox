@@ -205,17 +205,17 @@
 
 (define-generic add-listener (object type listener capture?))
 
-(define-function add-listener ((node <node>) type listener capture?)
+(define-method add-listener ((node <node>) type listener capture?)
   ((js:get-property node "addEventListener") type listener capture?))
 
 
 (define-generic remove-listener (object type listener capture?))
 
-(define-function remove-listener ((node <node>) type listener capture?)
+(define-method remove-listener ((node <node>) type listener capture?)
   ((js:get-property node "removeEventListener") type listener capture?))
 
 
-(define-generic trigger-event (object (event <event>)))
+(define-method trigger-event (object (event <event>)))
 
 (define-function trigger-event ((node <node>) (event <event>))
   ((js:get-property node "dispatchEvent") event))
