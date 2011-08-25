@@ -5,7 +5,7 @@
            log error
            append-child delete-element
            add-listener remove-listener
-           event-phase event-type event-target
+           event-phase event-type event-target event-current-target
            event-touches event-target-touches event-changed-touches
            event-client-position event-page-position event-screen-position
            make-element make-event
@@ -14,6 +14,7 @@
            prevent-default stop-propagation trigger-event
            add-class remove-class toggle-class has-class?
            attribute
+           element-parent
            element-text element-style element-children
            element-inner-height element-inner-width
            element-content-height element-content-width
@@ -261,6 +262,9 @@
 
 (define-function event-target ((event <event>))
   (js:get-property event "target"))
+
+(define-function event-current-target ((event <event>))
+  (js:get-property event "currentTarget"))
 
 (define-function event-phase ((event <event>))
   (select (js:get-property event "eventPhase") ==
