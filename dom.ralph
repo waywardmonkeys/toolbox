@@ -17,7 +17,7 @@
            element-text element-style element-children
            element-inner-height element-inner-width
            element-content-height element-content-width
-           element-width element-height
+           element-width element-height element-bounds
            element-visibility))
 
 (define-function log (#rest objects)
