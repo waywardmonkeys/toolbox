@@ -19,7 +19,13 @@
            element-inner-height element-inner-width
            element-content-height element-content-width
            element-width element-height element-bounds
-           element-visibility))
+           element-visibility
+           element-translation
+           element-transition-duration
+           element-transition-properties
+           element-transition-function
+           element-top element-left))
+
 
 (define-function log (#rest objects)
   ((js:inline "Function.prototype.apply.call")
@@ -149,6 +155,35 @@
 
 (define-function element-bounds (element)
   ((js:get-property element "getBoundingClientRect")))
+
+;;
+
+(define-function focus-element ((element <element>))
+  ((js:get-property element "focus")))
+
+
+;; transformation / transition
+
+(define-function (setter element-translation) ((element <element>) vector)
+  (set! (element-style element "webkitTransform")
+        (concatenate "translate3d("
+                     (or (first vector) 0) "px,"
+                     (or (second vector) 0) "px,"
+                     (or (third vector) 0) "px)")))
+
+(define-function (setter element-transition-duration) ((element <element>) duration)
+  (set! (element-style element "webkitTransitionDuration")
+        (concatenate (as-string duration) "ms")))
+
+(define-function (setter element-transition-properties) ((element <element>) properties)
+  (set! (element-style element "webkitTransitionProperty")
+        (if (empty? properties)
+            "none"
+            (join properties ", "))))
+
+(define-function (setter element-transition-function) ((element <element>) function)
+  (set! (element-style element "webkitTransitionTimingFunction")
+        function))
 
 
 ;; query
@@ -308,8 +343,3 @@
        add-class
        remove-class)
    element class))
-
-;;
-
-(define-function focus-element ((element <element>))
-  ((js:get-property element "focus")))
