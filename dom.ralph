@@ -43,12 +43,15 @@
 
 ;; elements
 
-(define-function make-element (name #key class parent)
+(define-function make-element (name #key class parent text)
   (js:var element ((js:get-property *document* "createElement") name))
   (when class
     (add-class element class))
   (when parent
     (append-child parent element))
+  (when text
+    (set! (element-text element)
+          text))
   element)
 
 (define-function make-text-node (text)
