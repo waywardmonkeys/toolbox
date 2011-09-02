@@ -3,7 +3,7 @@
   export: (*body* *head* *document* *window*
            <element> <node>
            log error
-           append-child delete-element
+           append-child append-children delete-element
            add-listener remove-listener
            event-phase event-type event-target event-current-target
            event-touches event-target-touches event-changed-touches
@@ -68,6 +68,13 @@
 
 (define-function append-child ((parent <element>) (child <element>))
   ((js:get-property parent "appendChild") child))
+
+(define-function append-children ((parent <element>) children)
+  (js:var fragment ((js:get-property *document* "createDocumentFragment")))
+  (for-each ((child children))
+            ()
+    ((js:get-property fragment "appendChild") child))
+  ((js:get-property parent "appendChild") fragment))
 
 (define-function prepend-child ((parent <element>) (child <element>))
   (insert-before parent child
