@@ -146,8 +146,12 @@
   (delete-children element)
   (append-child element (make-text-node text)))
 
+(define-function element-style ((element <element>) name)
+  ((js:get-property element "style" "getPropertyValue") name))
+
 (define-function (setter element-style) ((element <element>) name value)
-  (set! (js:get-property element "style" name) value))
+  ((js:get-property element "style" "setProperty")
+   name (js:or value js:null) ""))
 
 (define-function (setter element-height) (element height)
   (set! (element-style element "height")
@@ -181,24 +185,24 @@
 ;; transformation / transition
 
 (define-function (setter element-translation) ((element <element>) vector)
-  (set! (element-style element "webkitTransform")
+  (set! (element-style element "-webkit-transform")
         (concatenate "translate3d("
                      (or (first vector) 0) "px,"
                      (or (second vector) 0) "px,"
                      (or (third vector) 0) "px)")))
 
 (define-function (setter element-transition-duration) ((element <element>) duration)
-  (set! (element-style element "webkitTransitionDuration")
+  (set! (element-style element "-webkit-transition-duration")
         (concatenate (as-string duration) "ms")))
 
 (define-function (setter element-transition-properties) ((element <element>) properties)
-  (set! (element-style element "webkitTransitionProperty")
+  (set! (element-style element "-webkit-transition-property")
         (if (empty? properties)
             "none"
             (join properties ", "))))
 
 (define-function (setter element-transition-function) ((element <element>) function)
-  (set! (element-style element "webkitTransitionTimingFunction")
+  (set! (element-style element "-webkit-transition-timing-unction")
         function))
 
 
