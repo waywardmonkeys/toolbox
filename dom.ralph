@@ -3,7 +3,9 @@
   export: (*body* *head* *document* *window*
            <element> <node>
            log error
-           append-child append-children delete-element
+           append-child append-children prepend-child
+           remove-child delete-element
+           replace-child replace-element
            add-listener remove-listener
            event-phase event-type event-target event-current-target
            event-touches event-target-touches event-changed-touches
@@ -105,6 +107,13 @@
   (js:while (js:get-property element "lastChild")
     ((js:get-property element "removeChild")
      (js:get-property element "lastChild"))))
+
+(define-function replace-child ((parent <element>) old new)
+  ((js:get-property parent "replaceChild") new old))
+
+(define-function replace-element ((element <element>) (replacement <element>))
+  (replace-child (element-parent element)
+                 element replacement))
 
 (define-function element-height (element)
   (js:get-property element "offsetHeight"))
