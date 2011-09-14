@@ -79,8 +79,7 @@
   ((js:get-property parent "appendChild") fragment))
 
 (define-function prepend-child ((parent <element>) (child <element>))
-  (insert-before parent child
-                 (js:get-property parent "firstChild")))
+  (insert-before child (js:get-property parent "firstChild")))
 
 (define-function insert-before ((element <element>) (reference <element>))
   ((js:get-property (element-parent reference) "insertBefore")
