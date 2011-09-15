@@ -150,7 +150,7 @@
 
 (define-function (setter element-style) ((element <element>) name value)
   ((js:get-property element "style" "setProperty")
-   name (js:or value js:null) ""))
+   name (if value (as-string value) js:null) ""))
 
 (define-function (setter element-height) (element height)
   (set! (element-style element "height")
