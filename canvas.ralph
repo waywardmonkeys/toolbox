@@ -1,0 +1,39 @@
+(define-module toolbox/canvas
+  import: (runtime/core toolbox/dom)
+  export: (canvas-clear-rect canvas-rect canvas-arc
+           canvas-begin-path canvas-close-path
+           canvas-fill canvas-rotate canvas-translate
+           canvas-save canvas-restore))
+
+(define-function canvas-clear-rect (context x y w h)
+  ((js:get-property context "clearRect") x y w h))
+
+(define-function canvas-rect (context x y w h)
+  ((js:get-property context "rect") x y w h))
+
+(define-function canvas-arc (context x y radius
+                                     start-angle end-angle
+                                     anti-clockwise?)
+  ((js:get-property context "arc")
+   x y radius start-angle end-angle anti-clockwise?))
+
+(define-function canvas-begin-path (context)
+  ((js:get-property context "beginPath")))
+
+(define-function canvas-close-path (context)
+  ((js:get-property context "closePath")))
+
+(define-function canvas-fill (context)
+  ((js:get-property context "fill")))
+
+(define-function canvas-rotate (context angle)
+  ((js:get-property context "rotate") angle))
+
+(define-function canvas-translate (context x y)
+  ((js:get-property context "translate") x y))
+
+(define-function canvas-save (context)
+  ((js:get-property context "save")))
+
+(define-function canvas-restore (context)
+  ((js:get-property context "restore")))

@@ -26,7 +26,8 @@
            element-transition-duration
            element-transition-properties
            element-transition-function
-           element-top element-left))
+           element-top element-left element-right
+           element-context))
 
 
 (define-function log (#rest objects)
@@ -132,6 +133,10 @@
 (define-function element-left (element)
   (js:get-property element "offsetLeft"))
 
+(define-function element-right (element)
+  (- (get (element-bounds (element-parent element)) "right")
+     (get (element-bounds element) "right")))
+
 (define-function element-content-height (element)
   (js:get-property element "scrollHeight"))
 
@@ -144,6 +149,9 @@
 (define-function (setter element-text) (element text)
   (delete-children element)
   (append-child element (make-text-node text)))
+
+(define-function element-context (element name)
+  ((js:get-property element "getContext") name))
 
 (define-function element-style ((element <element>) name)
   ((js:get-property element "style" "getPropertyValue") name))
@@ -362,3 +370,4 @@
        add-class
        remove-class)
    element class))
+
