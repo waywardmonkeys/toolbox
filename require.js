@@ -1,5 +1,5 @@
 
-// define('module-name', [dependeny, ...], function (exports) { ... })
+// define('module-name', [dependency, ...], function (exports) { ... })
 // require(['module-name', ...], function (exports) { ... })
 
 var require, define, contexts = {};
@@ -8,7 +8,6 @@ var require, define, contexts = {};
     var modules = {};
     var requests = 0;
     var callbacks = {};
-	var head = document.getElementsByTagName('head')[0];
 	var href = document.location.href;
 	var root = href.substring(0, href.lastIndexOf('/') + 1);
 
@@ -17,18 +16,29 @@ var require, define, contexts = {};
 			callbacks[name] = [callback];
 			var url = root + name + '.js';
 
-			var timestamp = (new Date()).getTime();
-			url += '?time=' + timestamp;
+            if (require.force) {
+			    var timestamp = (new Date()).getTime();
+			    url += '?time=' + timestamp;
+            }
 
-			var iframe = document.createElement('iframe');
-			iframe.style.display = 'none';
-			document.body.appendChild(iframe);
-			iframe.contentWindow.eval("(function () {"
-									  + "var script = document.createElement('script');"
-									  + "script.setAttribute('src', '" + url + "');"
-									  + "document.head.appendChild(script);"
-									  + "})()");
-			contexts[name] = iframe.contentWindow;
+            if (require.frames) {
+			    var iframe = document.createElement('iframe');
+			    iframe.style.display = 'none';
+			    document.body.appendChild(iframe);
+
+			    iframe.contentWindow.eval("(function () {"
+									      + "var script = document.createElement('script');"
+									      + "script.setAttribute('src', '" + url + "');"
+									      + "document.head.appendChild(script);"
+									      + "})()");
+			    contexts[name] = iframe.contentWindow;
+            } else {
+                var script = document.createElement('script');
+				script.setAttribute('src', url);
+                (document.head || document.getElementsByTagName('head')[0])
+                    .appendChild(script);
+			    contexts[name] = window;
+            }
 		} else
 			callbacks[name].push(callback);
 	};
@@ -53,6 +63,8 @@ var require, define, contexts = {};
 			}
 		})();
 	};
+
+    require.frames = true;
 
 	function inject (module, dependencies) {
 		for (var i = 0, n = dependencies.length; i < n; i++) {
