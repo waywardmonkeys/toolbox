@@ -5,7 +5,7 @@
            log error
            append-child append-children prepend-child
            remove-child delete-element
-           replace-child replace-element
+           replace-child replace-element wrap-element
            add-listener remove-listener
            event-phase event-type event-target event-current-target
            event-touches event-target-touches event-changed-touches
@@ -27,7 +27,9 @@
            element-transition-properties
            element-transition-function
            element-top element-left element-right
-           element-context))
+           element-context
+           unset-element-style
+           focus-element focused-element))
 
 
 (define-function log (#rest objects)
@@ -115,6 +117,10 @@
   (replace-child (element-parent element)
                  element replacement))
 
+(define-function wrap-element ((element <element>) (wrapper <element>))
+  (replace-element element wrapper)
+  (append-child wrapper element))
+
 (define-function element-height (element)
   (js:get-property element "offsetHeight"))
 
@@ -160,6 +166,9 @@
   ((js:get-property element "style" "setProperty")
    name (if value (as-string value) js:null) ""))
 
+(define-function unset-element-style ((element <element>) name)
+  (set! (element-style element name) #f))
+
 (define-function (setter element-height) (element height)
   (set! (element-style element "height")
         (concatenate (as-string height) "px")))
@@ -187,6 +196,11 @@
 
 (define-function focus-element ((element <element>))
   ((js:get-property element "focus")))
+
+(define-function focused-element ((element <element>))
+  (js:get-property *document* "activeElement"))
+
+
 
 
 ;; transformation / transition
