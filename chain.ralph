@@ -1,5 +1,5 @@
 (define-module toolbox/chain
-  import: (runtime/core toolbox/dom)
+  import: (ralph/core toolbox/dom)
   export: (done fail chain))
 
 ;; call asynchronous functions in sequence

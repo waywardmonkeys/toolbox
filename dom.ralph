@@ -1,5 +1,5 @@
 (define-module toolbox/dom
-  import: (runtime/core)
+  import: (ralph/core)
   export: (*body* *head* *document* *window*
            <element> <node>
            log error

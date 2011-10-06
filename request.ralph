@@ -1,5 +1,5 @@
 (define-module toolbox/request
-  import: (runtime/core runtime/regexp)
+  import: (ralph/core ralph/regexp)
   export: (<request> send))
 
 (define-class <request> ()

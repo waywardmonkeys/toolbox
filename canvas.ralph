@@ -1,5 +1,5 @@
 (define-module toolbox/canvas
-  import: (runtime/core toolbox/dom)
+  import: (ralph/core toolbox/dom)
   export: (canvas-clear-rect canvas-rect canvas-arc
            canvas-begin-path canvas-close-path
            canvas-fill canvas-rotate canvas-translate

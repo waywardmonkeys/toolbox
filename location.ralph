@@ -1,5 +1,5 @@
 (define-module toolbox/location
-  import: (runtime/core)
+  import: (ralph/core)
   export: (get-position))
 
 (define-function get-position (success
@@ -19,4 +19,4 @@
    ;;              "enableHighAccuracy" high-accuracy?)))
 
 (define-function clear-position-watch (id)
-  ((js:get-property geolocation "clearWatch") id))
+  ((js:get-property navigator "geolocation" "clearWatch") id))

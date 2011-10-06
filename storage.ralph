@@ -1,5 +1,5 @@
 (define-module toolbox/storage
-  import: (runtime/core)
+  import: (ralph/core)
   export: (locally-stored))
 
 (define-function locally-stored (key)

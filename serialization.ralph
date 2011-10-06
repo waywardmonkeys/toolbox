@@ -1,5 +1,5 @@
 (define-module toolbox/serialization
-  import: (runtime/core)
+  import: (ralph/core)
   export: (encode-json decode-json
            encode-xml decode-xml))
 
