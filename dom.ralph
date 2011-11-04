@@ -4,7 +4,7 @@
            <element> <node>
            log error
            append-child append-children prepend-child
-           remove-child delete-element
+           remove-child delete-element delete-children
            replace-child replace-element wrap-element
            add-listener remove-listener
            event-phase event-type event-target event-current-target
@@ -14,22 +14,28 @@
            query-id query-position
            query-xpath query-selector query-selector-all
            prevent-default stop-propagation trigger-event
-           add-class remove-class toggle-class has-class?
-           attribute
+           add-class remove-class toggle-class
+           has-class? (setter has-class?)
+           attribute (setter attribute)
            element-parent
-           element-text element-style element-children
+           element-text (setter element-text)
+           element-style (setter element-style)
+           element-children
            element-inner-height element-inner-width
            element-content-height element-content-width
-           element-width element-height element-bounds
-           element-visibility
-           element-translation
-           element-transition-duration
-           element-transition-properties
-           element-transition-function
+           element-width (setter element-width)
+           element-height (setter element-height)
+           element-bounds
+           element-visibility (setter element-visibility)
+           (setter element-translation)
+           (setter element-transition-duration)
+           (setter element-transition-properties)
+           (setter element-transition-function)
            element-top element-left element-right
            element-context
            unset-element-style
-           focus-element focused-element))
+           focus-element focused-element
+           unfocus-active-element))
 
 
 (define-function log (#rest objects)
