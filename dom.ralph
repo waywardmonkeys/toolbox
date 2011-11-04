@@ -200,7 +200,8 @@
 (define-function focused-element ((element <element>))
   (js:get-property *document* "activeElement"))
 
-
+(define-function unfocus-active-element ()
+  ((js:get-property *document* "activeElement" "blur")))
 
 
 ;; transformation / transition
