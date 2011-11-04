@@ -29,7 +29,7 @@
                           (as-array text)))
                     (trigger-event request
                                    (make-event "data" data: (if binary? data text)))))
-                 ((get request "cancelled?")
+                 ((get request "canceled?")
                   (trigger-event request (make-event "cancel")))
                  (else:
                   (trigger-event request (make-event "error"))))))))
@@ -47,7 +47,7 @@
   ((js:get-property request "xhr" "send") data))
 
 (define-function cancel ((request <request>))
-  (set! (get request "cancelled?") #t)
+  (set! (get request "canceled?") #t)
   ((js:get-property request "xhr" "abort")))
 
 ;; events for XHR transfer (name, capture?):
