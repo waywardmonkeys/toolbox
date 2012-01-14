@@ -35,7 +35,8 @@
            element-context
            unset-element-style
            focus-element focused-element
-           unfocus-active-element))
+           unfocus-active-element
+           translate-element))
 
 
 (define-function log (#rest objects)
@@ -232,6 +233,18 @@
 (define-function (setter element-transition-function) ((element <element>) function)
   (set! (element-style element "-webkit-transition-timing-unction")
         function))
+
+
+
+(define-function apply-transformation (name (element <element>) #rest values)
+  (bind ((style ((js:get-property *window* "getComputedStyle") element))
+         (transformation (js:get-property style "webkitTransform"))
+         (matrix (js:new (js:inline "WebKitCSSMatrix")
+                         transformation)))
+    (set! (element-style element "-webkit-transform")
+          ((js:get-property matrix name "apply") matrix values))))
+
+(define translate-element (curry apply-transformation "translate"))
 
 
 ;; query
