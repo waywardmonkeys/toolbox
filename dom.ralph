@@ -58,6 +58,7 @@
 (define <element> (js:inline "parent.Element"))
 (define <node> (js:inline "parent.Node"))
 (define <event> (js:inline "parent.Event"))
+(define <touch-event> (js:inline "parent.TouchEvent"))
 
 ;; elements
 
@@ -335,17 +336,22 @@
   event)
 
 (define-function event-page-position ((event <event>))
+  (js:if (instance? event <touch-event>)
+         (set! event (js:get-property event "touches" 0)))
   [(js:get-property event "pageX")
    (js:get-property event "pageY")])
 
 (define-function event-client-position ((event <event>))
+  (js:if (instance? event <touch-event>)
+         (set! event (js:get-property event "touches" 0)))
   [(js:get-property event "clientX")
    (js:get-property event "clientY")])
 
 (define-function event-screen-position ((event <event>))
+  (js:if (instance? event <touch-event>)
+         (set! event (js:get-property event "touches" 0)))
   [(js:get-property event "screenX")
    (js:get-property event "screenY")])
-
 
 (define-function event-changed-touches ((event <event>))
   (as-array (js:get-property event "changedTouches")))
