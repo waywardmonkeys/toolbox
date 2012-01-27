@@ -31,7 +31,10 @@
            (setter element-transition-duration)
            (setter element-transition-properties)
            (setter element-transition-function)
-           element-top element-left element-right
+           element-top (setter element-top)
+           element-left (setter element-left)
+           (setter element-position)
+           element-right
            element-context
            unset-element-style
            focus-element focused-element
@@ -145,8 +148,18 @@
 (define-function element-top (element)
   (js:get-property element "offsetTop"))
 
+(define-function (setter element-top) (element top)
+  (set! (element-style element "top") top))
+
 (define-function element-left (element)
   (js:get-property element "offsetLeft"))
+
+(define-function (setter element-left) (element left)
+  (set! (element-style element "left") left))
+
+(define-function (setter element-position) (element position)
+  (set! (element-left element) (first position))
+  (set! (element-top element) (second position)))
 
 (define-function element-right (element)
   (- (get (element-bounds (element-parent element)) "right")
