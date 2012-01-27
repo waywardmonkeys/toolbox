@@ -350,19 +350,19 @@
   event)
 
 (define-function event-page-position ((event <event>))
-  (js:if (instance? event <touch-event>)
+  (js:if (js:and <touch-event> (instance? event <touch-event>))
          (set! event (js:get-property event "touches" 0)))
   [(js:get-property event "pageX")
    (js:get-property event "pageY")])
 
 (define-function event-client-position ((event <event>))
-  (js:if (instance? event <touch-event>)
+  (js:if (js:and <touch-event> (instance? event <touch-event>))
          (set! event (js:get-property event "touches" 0)))
   [(js:get-property event "clientX")
    (js:get-property event "clientY")])
 
 (define-function event-screen-position ((event <event>))
-  (js:if (instance? event <touch-event>)
+  (js:if (js:and <touch-event> (instance? event <touch-event>))
          (set! event (js:get-property event "touches" 0)))
   [(js:get-property event "screenX")
    (js:get-property event "screenY")])
