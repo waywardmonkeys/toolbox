@@ -250,9 +250,10 @@
         function))
 
 
-
 (define-function apply-transformation (name (element <element>) #rest values)
-  (bind ((style ((js:get-property *window* "getComputedStyle") element))
+  (bind (;; TODO: computed or not?!
+         ;; (style ((js:get-property *window* "getComputedStyle") element))
+         (style (js:get-property element "style"))
          (transformation (js:get-property style "webkitTransform"))
          (matrix (js:new (js:inline "WebKitCSSMatrix")
                          transformation)))
