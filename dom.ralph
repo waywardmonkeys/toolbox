@@ -42,7 +42,8 @@
 (define-function log (#rest objects)
   ((js:inline "Function.prototype.apply.call")
    (js:get-property console "log")
-   console objects))
+   console objects)
+  (first objects))
 
 (define-function error (#rest objects)
   ((js:inline "Function.prototype.apply.call")
