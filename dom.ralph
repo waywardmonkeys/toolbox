@@ -25,6 +25,7 @@
            element-content-height element-content-width
            element-width (setter element-width)
            element-height (setter element-height)
+           (setter element-dimensions)
            element-bounds
            element-visibility (setter element-visibility)
            (setter element-translation)
@@ -138,6 +139,10 @@
 
 (define-function element-width (element)
   (js:get-property element "offsetWidth"))
+
+(define-function (setter element-dimensions) (element dimensions)
+  (set! (element-width element) (first dimensions))
+  (set! (element-height element) (second dimensions)))
 
 (define-function element-inner-height (element)
   (js:get-property element "clientHeight"))
