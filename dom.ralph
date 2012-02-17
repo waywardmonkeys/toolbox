@@ -324,15 +324,15 @@
   ((js:get-property event "preventDefault")))
 
 
-(define-generic add-listener (object type listener capture?))
+(define-generic add-listener (object type listener #key capture?))
 
-(define-method add-listener ((node <node>) type listener capture?)
+(define-method add-listener ((node <node>) type listener #key capture?)
   ((js:get-property node "addEventListener") type listener capture?))
 
 
-(define-generic remove-listener (object type listener capture?))
+(define-generic remove-listener (object type listener #key capture?))
 
-(define-method remove-listener ((node <node>) type listener capture?)
+(define-method remove-listener ((node <node>) type listener #key capture?)
   ((js:get-property node "removeEventListener") type listener capture?))
 
 
