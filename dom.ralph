@@ -38,7 +38,8 @@
            element-right
            element-context
            unset-element-style
-           focus-element focused-element
+           focus-element unfocus-element
+           focused-element
            unfocus-active-element
            translate-element))
 
@@ -223,6 +224,9 @@
 
 (define-function focus-element ((element <element>))
   ((js:get-property element "focus")))
+
+(define-function unfocus-element ((element <element>))
+  ((js:get-property element "blur")))
 
 (define-function focused-element ((element <element>))
   (js:get-property *document* "activeElement"))
