@@ -199,8 +199,11 @@
 (define-function element-context (element name)
   ((js:get-property element "getContext") name))
 
-(define-function element-style ((element <element>) name)
-  ((js:get-property element "style" "getPropertyValue") name))
+(define-function element-style ((element <element>) name #key computed?)
+  ((js:get-property (if computed?
+                        ((js:get-property *window* "getComputedStyle") element)
+                        (js:get-property element "style"))
+                    "getPropertyValue") name))
 
 (define-function (setter element-style) ((element <element>) name value)
   ((js:get-property element "style" "setProperty")
