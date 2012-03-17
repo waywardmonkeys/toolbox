@@ -26,6 +26,7 @@
            element-width (setter element-width)
            element-height (setter element-height)
            (setter element-dimensions)
+           element-left-margin element-right-margin
            element-client-bounds element-client-center
            element-visibility (setter element-visibility)
            (setter element-translation)
@@ -176,6 +177,17 @@
 
 (define-function element-content-width (element)
   (js:get-property element "scrollWidth"))
+
+
+(define-function element-left-margin (element)
+  (parse-int (element-style element "margin-left"
+                            computed?: #t)
+             10))
+
+(define-function element-right-margin (element)
+  (parse-int (element-style element "margin-right"
+                            computed?: #t)
+             10))
 
 (define-function element-text (element)
   (js:get-property element "innerText"))
