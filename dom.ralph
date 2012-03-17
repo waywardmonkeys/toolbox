@@ -220,6 +220,13 @@
 (define-function element-client-bounds (element)
   ((js:get-property element "getBoundingClientRect")))
 
+(define-function element-client-center (element)
+  (bind ((bounds (element-client-bounds element)))
+    [(+ (get bounds "left")
+        (/ (get bounds "width") 2))
+     (+ (get bounds "top")
+        (/ (get bounds "height") 2))]))
+
 ;;
 
 (define-function focus-element ((element <element>))
