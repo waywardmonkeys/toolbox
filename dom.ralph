@@ -26,7 +26,7 @@
            element-width (setter element-width)
            element-height (setter element-height)
            (setter element-dimensions)
-           element-bounds
+           element-client-bounds element-client-center
            element-visibility (setter element-visibility)
            (setter element-translation)
            (setter element-transition-duration)
@@ -168,8 +168,8 @@
   (set! (element-top element) (second position)))
 
 (define-function element-right (element)
-  (- (get (element-bounds (element-parent element)) "right")
-     (get (element-bounds element) "right")))
+  (- (get (element-client-bounds (element-parent element)) "right")
+     (get (element-client-bounds element) "right")))
 
 (define-function element-content-height (element)
   (js:get-property element "scrollHeight"))
@@ -217,7 +217,7 @@
    (set! (element-style element "visibility")
          (if visible? "visible" "hidden")))
 
-(define-function element-bounds (element)
+(define-function element-client-bounds (element)
   ((js:get-property element "getBoundingClientRect")))
 
 ;;
