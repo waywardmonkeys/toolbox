@@ -5,10 +5,10 @@
 
 (define-generic encode-json (object))
 
-(define-function encode-json (object)
+(define-method encode-json (object)
   ((js:inline "JSON.stringify") object))
 
-(define-function decode-json ((string <string>))
+(define-method decode-json ((string <string>))
   ((js:inline "JSON.parse") string))
 
 (define-function encode-xml ((document <document>))

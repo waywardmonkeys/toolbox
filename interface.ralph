@@ -13,19 +13,19 @@
 
 (define-generic attach (component target))
 
-(define-function attach ((component <component>) element)
+(define-method attach ((component <component>) element)
   (append-child (if (instance? element <component>)
                     (get element "element")
                     element)
                 (get component "element")))
 
-(define-function show ((component <component>))
+(define-method show ((component <component>))
   (remove-class (get component "element") "hidden"))
 
 (define-function hidden? ((component <component>))
   (has-class? (get component "element") "hidden"))
 
-(define-function hide ((component <component>))
+(define-method hide ((component <component>))
   (add-class (get component "element") "hidden"))
 
 

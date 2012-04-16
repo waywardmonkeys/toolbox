@@ -5,7 +5,7 @@
 (define-class <request> ()
   in-progress?)
 
-(define-function initialize ((request <request>) #key url
+(define-method initialize ((request <request>) #key url
                              (method "GET") (asynchronous? #t)
                              content-type binary?)
   (bind ((xhr (set! (get request "xhr")
